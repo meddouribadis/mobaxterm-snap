@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 #
-# Author:
-#   mmtrt [Taqi Raza]
-#
 # Description:
 #   download and prepare heidisql for snap
 #
