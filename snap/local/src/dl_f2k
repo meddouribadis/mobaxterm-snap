@@ -4,14 +4,14 @@
 #   mmtrt [Taqi Raza]
 #
 # Description:
-#   download and prepare foobar2000 for snap
+#   download and prepare heidisql for snap
 #
-# Date: Jan 24 2018
+# Date: Mar 09 2020
 #
 
 dlf2k () {
-    wget https://www.foobar2000.org/download -nH --cut-dirs=3 -r -l 2 -A exe -R '*beta*.exe' &> /dev/null
-    wget https://www.foobar2000.org/encoderpack -nH --cut-dirs=3 -r -l 2 -A exe &> /dev/null
+    ver=$(wget https://api.github.com/repos/HeidiSQL/HeidiSQL/releases -qO - 2>&1 | grep tag_name | cut -d'"' -f4 | sed s'/v//' | head -n1)
+    wget https://www.heidisql.com/downloads/releases/HeidiSQL_${ver}_32_Portable.zip &> /dev/null
 }
 
 dli7z16x64 () {
@@ -29,60 +29,33 @@ dli7z16x64 () {
 
 mkf2k () {
     mkdir -p ./{wine-runtime,wine-platform,bin} && mkdir -p sommelier/hooks && mkdir -p usr/share/{pixmaps,applications}
-    7z x "foobar2000_v*.exe" -x'!$PLUGINSDIR' -x'!$R0' -x'!icons' -x'!foobar2000 Shell Associations Updater.exe' -x'!uninstall.exe' -o"usr/share/foobar2000" &> /dev/null
-    7z x "Free_*.exe" -x'!$PLUGINSDIR' -o"usr/share/foobar2000/encoders" &> /dev/null
-    touch usr/share/foobar2000/portable_mode_enabled
+    7z x "HeidiSQL_.$ver._32_Portable.zip" -o"usr/share/heidisql" &> /dev/null
     find "usr" -type d -execdir chmod 755 {} +
 }
 
 mkdsk () {
-ver=$(wget http://www.foobar2000.org/download -q -S -O - 2>&1 | grep foobar2000_v | awk '{print $4}'|sed '2,3d;s|v||;s|</a><br/>||;s|</a>||')
-cat > foobar2000.desktop <<'EOF1'
+ver=ver=$(wget https://api.github.com/repos/HeidiSQL/HeidiSQL/releases -qO - 2>&1 | grep tag_name | cut -d'"' -f4 | sed s'/v//' | head -n1)
+cat > heidisql.desktop <<'EOF1'
 [Desktop Entry]
-Name=foobar2000
-GenericName=Audio player
-Comment=Simple and powerful audio player.
-Actions=PlayPause;Stop;Next;Prev;Random;Config
+Name=HeidiSQL
+GenericName=HeidiSQL
+Comment=Database client browser
 Encoding=UTF-8
 Version=
 Type=Application
 Terminal=false
-Icon=${SNAP}/usr/share/pixmaps/foobar2000.png
-TryExec=foobar2000
-Exec=foobar2000 %F
-StartupWMClass=foobar2000.exe
-Categories=AudioVideo;Audio;Player;
-MimeType=audio/aac;audio/x-ape;audio/basic;audio/mp4;audio/mpeg;audio/mpegurl;audio/vorbis;audio/x-flac;audio/x-mp2;audio/x-mp3;audio/x-mpegurl;audio/x-ms-wma;audio/x-oggflac;audio/x-speex;audio/x-vorbis;audio/x-wav;audio/m3u;audio/x-aifc;audio/x-aiffc;audio/x-aiff;audio/x-musepack;audio/x-wavpack;x-content/audio-player;audio/x-matroska;audio/x-vorbis+ogg;
-
-[Desktop Action PlayPause]
-Name=Play/Pause
-Exec=foobar2000 /playpause
-
-[Desktop Action Stop]
-Name=Stop
-Exec=foobar2000 /stop
-
-[Desktop Action Next]
-Name=Next
-Exec=foobar2000 /next
-
-[Desktop Action Prev]
-Name=Prev
-Exec=foobar2000 /prev
-
-[Desktop Action Random]
-Name=Random
-Exec=foobar2000 /rand
-
-[Desktop Action Config]
-Name=Preferences
-Exec=foobar2000 /config
+Icon=${SNAP}/usr/share/pixmaps/heidisql.png
+TryExec=heidisql
+Exec=heidisql %F
+StartupWMClass=heidisql.exe
+Categories=Development,
+MimeType=text/plain;
 EOF1
-sed -i -e 's|Version=|Version='"$ver"'|g' foobar2000.desktop
+sed -i -e 's|Version=|Version='"$ver"'|g' heidisql.desktop
 }
 
 dlf2k
 dli7z16x64
 mkdsk
 mkf2k
-mv pre-install sommelier/hooks && mv foobar2000.desktop usr/share/applications && mv foobar2000.png usr/share/pixmaps && cp -R -p {sommelier,bin,usr,wine-runtime,wine-platform} $SNAPCRAFT_PART_INSTALL
+mv pre-install sommelier/hooks && mv heidisql.desktop usr/share/applications && mv heidisql.png usr/share/pixmaps && cp -R -p {sommelier,bin,usr,wine-runtime,wine-platform} $SNAPCRAFT_PART_INSTALL

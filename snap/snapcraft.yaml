@@ -1,20 +1,11 @@
-name: foobar2000
-title: foobar2000 (Wine)
-summary: foobar2000 is an advanced freeware audio player.
-description: |
- Features
-   *Supported audio formats are MP3, MP4, AAC, CD Audio, WMA, Vorbis, Opus, FLAC, WavPack, WAV, AIFF, Musepack, Speex, AU, SND... and more with additional components.
-   *Gapless playback.
-   *Easily customizable user interface layout.
-   *Advanced tagging capabilities.
-   *Support for ripping Audio CDs as well as transcoding all supported audio formats using the Converter component.
-   *Full ReplayGain support.
-   *Customizable keyboard shortcuts.
-   *Open component architecture allowing third-party developers to extend functionality of the player.
-adopt-info: foobar2000
+name: heidisql
+title: heidisql (Wine)
+summary: HeidiSQL is a free and powerful database client.
+description: HeidiSQL is free software, and has the aim to be easy to learn. "Heidi" lets you see and edit data and structures from computers running one of the database systems MariaDB, MySQL, Microsoft SQL, PostgreSQL and SQLite. Invented in 2002 by Ansgar, HeidiSQL belongs to the most popular tools for MariaDB and MySQL worldwide. 
+adopt-info: heidisql
 
 confinement: strict
-grade: stable
+grade: candidate
 architectures:
   - build-on: amd64
     run-on: [amd64, i386]
@@ -26,33 +17,26 @@ plugs:
     interface: content
     target: $SNAP/wine-runtime
     default-provider: wine-platform-runtime
-  wine-5-stable:
+  wine-6-staging:
     interface: content
     target: $SNAP/wine-platform
-    default-provider: wine-platform-5-stable
+    default-provider: wine-platform-6-staging
 
 environment:
   WINEDLLOVERRIDES: "mscoree,mshtml="         # Prevent pop-ups about Wine Mono and Wine Gecko
   WINEARCH: "win32"
-  TRICKS: "wmp9 vcrun2017"
 
 apps:
-  foobar2000:
+  heidisql:
     extensions: [ gnome-3-28 ]
     command: bin/sommelier run-exe
     environment:
-      RUN_EXE: "$SNAP_USER_DATA/foobar2000/foobar2000.exe"
+      RUN_EXE: "$SNAP_USER_DATA/heidisql/heidisql.exe"
       SOMMELIER_KEEP_CWD: 1  # Don't change the working directory so relative paths still work
     plugs:
-      - audio-playback
-      - opengl
       - home
       - network
-      - hardware-observe
-      - process-control
-      - cups-control
-      - removable-media
-    desktop: usr/share/applications/foobar2000.desktop
+    desktop: usr/share/applications/heidisql.desktop
   # The wine command can be used to run applications inside the wine
   # environment that this snap uses.
   #
@@ -64,26 +48,15 @@ apps:
     plugs:
       - home
       - network
-      - hardware-observe
-      - process-control
-      - cups-control
-      - removable-media
-  # The winetricks command can be used to run winetricks inside the wine
-  # environment that this snap uses.
-  winetricks:
-    extensions: [ gnome-3-28 ]
-    command: bin/sommelier winetricks
-    plugs:
-      - network
 
 parts:
-  foobar2000:
+  heidisql:
     plugin: nil
     source: ./snap/local/src
     override-build: |
       snapcraftctl build
       set -ex
-      ver=$(wget http://www.foobar2000.org/download -q -S -O - 2>&1 | grep foobar2000_v | awk '{print $4}'|sed '2,3d;s|v||;s|</a><br/>||;s|</a>||')
+      ver=11.2
       snapcraftctl set-version "$ver"
       ./dl_f2k
     stage:
