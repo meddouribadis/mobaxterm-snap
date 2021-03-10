@@ -31,12 +31,12 @@ apps:
     extensions: [ gnome-3-28 ]
     command: bin/sommelier run-exe
     environment:
-      RUN_EXE: "$SNAP_USER_DATA/heidisql/heidisql.exe"
+      RUN_EXE: "$SNAP_USER_DATA/heidisql-wine/heidisql.exe"
       SOMMELIER_KEEP_CWD: 1  # Don't change the working directory so relative paths still work
     plugs:
       - home
       - network
-    desktop: usr/share/applications/heidisql.desktop
+    desktop: usr/share/applications/heidisql-wine.desktop
   # The wine command can be used to run applications inside the wine
   # environment that this snap uses.
   #

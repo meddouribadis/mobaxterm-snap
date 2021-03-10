@@ -26,33 +26,34 @@ dli7z16x64 () {
 
 mkf2k () {
     mkdir -p ./{wine-runtime,wine-platform,bin} && mkdir -p sommelier/hooks && mkdir -p usr/share/{pixmaps,applications}
-    7z x "HeidiSQL_.$ver._32_Portable.zip" -o"usr/share/heidisql" &> /dev/null
+    7z x "HeidiSQL_${ver}_32_Portable.zip" -o"usr/share/heidisql-wine" &> /dev/null
+    cp usr/share/heidisql-wine/heidisql.exe usr/share/heidisql-wine/heidisql-wine.exe
     find "usr" -type d -execdir chmod 755 {} +
 }
 
 mkdsk () {
-ver=ver=$(wget https://api.github.com/repos/HeidiSQL/HeidiSQL/releases -qO - 2>&1 | grep tag_name | cut -d'"' -f4 | sed s'/v//' | head -n1)
-cat > heidisql.desktop <<'EOF1'
+ver=$(wget https://api.github.com/repos/HeidiSQL/HeidiSQL/releases -qO - 2>&1 | grep tag_name | cut -d'"' -f4 | sed s'/v//' | head -n1)
+cat > heidisql-wine.desktop <<'EOF1'
 [Desktop Entry]
 Name=HeidiSQL
 GenericName=HeidiSQL
-Comment=Database client browser
+Comment=HeidiSQL snap version
 Encoding=UTF-8
 Version=
 Type=Application
 Terminal=false
-Icon=${SNAP}/usr/share/pixmaps/heidisql.png
-TryExec=heidisql
-Exec=heidisql %F
+Icon=${SNAP}/usr/share/pixmaps/heidisql-wine.png
+TryExec=heidisql-wine
+Exec=heidisql-wine %F
 StartupWMClass=heidisql.exe
 Categories=Development,
 MimeType=text/plain;
 EOF1
-sed -i -e 's|Version=|Version='"$ver"'|g' heidisql.desktop
+sed -i -e 's|Version=|Version='"$ver"'|g' heidisql-wine.desktop
 }
 
 dlf2k
 dli7z16x64
 mkdsk
 mkf2k
-mv pre-install sommelier/hooks && mv heidisql.desktop usr/share/applications && mv heidisql.png usr/share/pixmaps && cp -R -p {sommelier,bin,usr,wine-runtime,wine-platform} $SNAPCRAFT_PART_INSTALL
+mv pre-install sommelier/hooks && mv heidisql-wine.desktop usr/share/applications && mv heidisql-wine.png usr/share/pixmaps && cp -R -p {sommelier,bin,usr,wine-runtime,wine-platform} $SNAPCRAFT_PART_INSTALL
