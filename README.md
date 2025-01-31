@@ -16,7 +16,7 @@
 
 ## Install
 
-    sudo snap install --workinprogress--
+    sudo snap install heidisql-wine
 
 ([Don't have snapd installed?](https://snapcraft.io/docs/core/install))
 
