@@ -8,7 +8,7 @@ confinement: strict
 grade: stable
 architectures:
   - build-on: amd64
-    run-on: [amd64, i386]
+    run-on: [amd64]
 base: core18
 compression: lzo
 
@@ -24,7 +24,7 @@ plugs:
 
 environment:
   WINEDLLOVERRIDES: "mscoree,mshtml="         # Prevent pop-ups about Wine Mono and Wine Gecko
-  WINEARCH: "win32"
+  WINEARCH: "win64"
 
 apps:
   heidisql-wine:
