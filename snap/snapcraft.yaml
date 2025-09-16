@@ -31,7 +31,7 @@ apps:
     extensions: [ gnome-3-28 ]
     command: bin/sommelier run-exe
     environment:
-      RUN_EXE: "$SNAP_USER_DATA/mobaxterm-wine/mobaxterm.exe"
+      RUN_EXE: "$SNAP_USER_DATA/mobaxterm-wine/mobaxterm-wine.exe"
       SOMMELIER_KEEP_CWD: 1  # Don't change the working directory so relative paths still work
     plugs:
       - home
