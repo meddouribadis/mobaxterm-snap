@@ -1,8 +1,8 @@
-name: heidisql-wine
-title: heidisql (Wine)
-summary: HeidiSQL is a free and powerful database client.
-description: HeidiSQL is free software, and has the aim to be easy to learn. "Heidi" lets you see and edit data and structures from computers running one of the database systems MariaDB, MySQL, Microsoft SQL, PostgreSQL and SQLite. Invented in 2002 by Ansgar, HeidiSQL belongs to the most popular tools for MariaDB and MySQL worldwide.
-adopt-info: heidisql-wine
+name: mobaxterm-wine
+title: MobaXterm (Wine)
+summary: MobaXterm advanced terminal and SSH client for Windows, via Wine
+description: MobaXterm provides an advanced terminal, SSH client, X11 server, and many network tools for Windows. This version uses Wine to run MobaXterm on Linux through Snap.
+adopt-info: mobaxterm-wine
 
 confinement: strict
 grade: stable
@@ -27,16 +27,16 @@ environment:
   WINEARCH: "win64"
 
 apps:
-  heidisql-wine:
+  mobaxterm-wine:
     extensions: [ gnome-3-28 ]
     command: bin/sommelier run-exe
     environment:
-      RUN_EXE: "$SNAP_USER_DATA/heidisql-wine/heidisql.exe"
+      RUN_EXE: "$SNAP_USER_DATA/mobaxterm-wine/mobaxterm.exe"
       SOMMELIER_KEEP_CWD: 1  # Don't change the working directory so relative paths still work
     plugs:
       - home
       - network
-    desktop: usr/share/applications/heidisql-wine.desktop
+    desktop: usr/share/applications/mobaxterm-wine.desktop
   # The wine command can be used to run applications inside the wine
   # environment that this snap uses.
   #
@@ -50,13 +50,13 @@ apps:
       - network
 
 parts:
-  heidisql-wine:
+  mobaxterm-wine:
     plugin: nil
     source: ./snap/local/src
     override-build: |
       snapcraftctl build
       set -ex
-      ver=$(wget https://api.github.com/repos/HeidiSQL/HeidiSQL/releases -qO - 2>&1 | grep tag_name | cut -d'"' -f4 | sed s'/v//' | head -n1)
+      ver=$(wget -qO - https://mobaxterm.mobatek.net/download-home-edition.html | grep -i 'MobaXterm.*Home Edition v' | head -n1 | sed -E 's/.*v([0-9.]+).*/\1/')
       snapcraftctl set-version "$ver"
       ./dl_f2k
     stage:

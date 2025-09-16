@@ -1,12 +1,11 @@
 <h1 align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/HeidiSQL_logo_image.png" alt="HeidiSQL" width="400">
+  <img src="./snap/local/src/mobaxterm-wine.png" alt="MobaXterm" width="100">
   <br />
-  HeidiSQL
+  MobaXterm
 </h1>
 
-<p align="center"><b>This is the snap for HeidiSQL</b></p>
-<p align="center">HeidiSQL is free software, and has the aim to be easy to learn. "Heidi" lets you see and edit data and structures from computers running one of the database systems MariaDB, MySQL, Microsoft SQL, PostgreSQL and SQLite. Invented in 2002 by Ansgar, HeidiSQL belongs to the most popular tools for MariaDB and MySQL worldwide.
-</p>
+<p align="center"><b>This is the snap for MobaXterm</b></p>
+<p align="center">MobaXterm is a free and advanced terminal for Windows, providing an all-in-one network application with an embedded X server, tabbed SSH client, and many other network tools for remote computing.</p>
 
 <!-- Uncomment and modify this when you are provided a build status badge
 <p align="center">
@@ -16,11 +15,11 @@
 
 ## Install
 
-    sudo snap install heidisql-wine
+`sudo snap install mobaxterm-wine`
 
 ([Don't have snapd installed?](https://snapcraft.io/docs/core/install))
 
-![heidisql](screenshot.png "HeidiSQL")
+![mobaxterm](screenshot.png "MobaXterm")
 
 <p align="center">Published for <img src="http://anything.codes/slack-emoji-for-techies/emoji/tux.png" align="top" width="24" /> with :gift_heart:</p>
 
